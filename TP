@@ -1,8 +1,6 @@
-local tool = script.Parent
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 local userInput = game:GetService("UserInputService")
-local teleportEnabled = false
 
 local function teleportToMouse()
 	local character = player.Character
@@ -11,23 +9,13 @@ local function teleportToMouse()
 	local target = mouse.Hit
 	if target then
 		local hrp = character:FindFirstChild("HumanoidRootPart")
-		hrp.CFrame = CFrame.new(target.Position + Vector3.new(0, 3, 0)) -- Teleport slightly above ground
+		hrp.CFrame = CFrame.new(target.Position + Vector3.new(0, 3, 0)) -- Offset to avoid ground clipping
 	end
 end
 
--- Toggle when tool is equipped
-tool.Equipped:Connect(function()
-	teleportEnabled = true
-end)
-
-tool.Unequipped:Connect(function()
-	teleportEnabled = false
-end)
-
--- Detect Ctrl + Mouse1 click
 userInput.InputBegan:Connect(function(input, gameProcessed)
-	if gameProcessed or not teleportEnabled then return end
-
+	if gameProcessed then return end
+	
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and userInput:IsKeyDown(Enum.KeyCode.LeftControl) then
 		teleportToMouse()
 	end
