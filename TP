@@ -2,6 +2,25 @@ local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 local userInput = game:GetService("UserInputService")
 
+local function createCreditLabel()
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "CreditLabel"
+	screenGui.ResetOnSpawn = false
+	screenGui.Parent = player:WaitForChild("PlayerGui")
+
+	local label = Instance.new("TextLabel")
+	label.Size = UDim2.new(0, 200, 0, 20)
+	label.Position = UDim2.new(1, -210, 1, -30) -- Bottom right corner
+	label.AnchorPoint = Vector2.new(0, 0)
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.TextTransparency = 0.4
+	label.Font = Enum.Font.Gotham
+	label.TextSize = 14
+	label.Text = "Made by SK,2tact on discord"
+	label.Parent = screenGui
+end
+
 local function teleportToMouse()
 	local character = player.Character
 	if not character or not character:FindFirstChild("HumanoidRootPart") then return end
@@ -9,13 +28,16 @@ local function teleportToMouse()
 	local target = mouse.Hit
 	if target then
 		local hrp = character:FindFirstChild("HumanoidRootPart")
-		hrp.CFrame = CFrame.new(target.Position + Vector3.new(0, 3, 0)) -- Offset to avoid ground clipping
+		hrp.CFrame = CFrame.new(target.Position + Vector3.new(0, 3, 0))
 	end
 end
 
+createCreditLabel()
+print("Made by SK,2tact on discord")
+
 userInput.InputBegan:Connect(function(input, gameProcessed)
 	if gameProcessed then return end
-	
+
 	if input.UserInputType == Enum.UserInputType.MouseButton1 and userInput:IsKeyDown(Enum.KeyCode.LeftControl) then
 		teleportToMouse()
 	end
